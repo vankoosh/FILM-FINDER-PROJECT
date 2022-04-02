@@ -39,12 +39,11 @@ const getMovies = async () => {
 
 const getMovieInfo = async (movie) => {
   const movieId = movie.id;
-  const movieEndpoint = `/movie/{${movieId}}`;
+  const movieEndpoint = `/movie/${movieId}`;
   const requestParams = `?api_key=${tmdbKey}`;
   const urlToFetch = `${tmdbBaseUrl}${movieEndpoint}${requestParams}`;
   try {
-    const response = fetch("https://api.themoviedb.org/3/movie/" + movieId + "?api_key=d0b1862294a50ae09f3e89f5e341bdee");
-    console.log(urlToFetch)
+    const response = await fetch(urlToFetch);
     if (response.ok) {
       const movieInfo = await response.json();
       console.log(movieInfo);
