@@ -9,10 +9,10 @@ const getGenres = async () => {
   try {
     const response = await fetch(urlToFetch);
     if (response.ok) {
-      const jsonResponse = await response.json(); // .json() takes the JSON object response that came back from .fetch() promise and converts it into a JS readable object
+      const jsonResponse = await response.json();
       console.log(jsonResponse);
-      const genres = jsonResponse.genres; // genres is a jsonResponse object after converting it from a JSON object and here you access its only key "genres" which has an array as its value
-      console.log(genres[0].id); // genres[0].id gives you "28" for example because 0: {id: 28, name: 'Action'}
+      const genres = jsonResponse.genres;
+      console.log(genres);
       return genres;
     }
   } catch (error) {
@@ -21,30 +21,50 @@ const getGenres = async () => {
 };
 
 const getMovies = async () => {
-  const selectedGenre = getSelectedGenre(); // stores the value of the selected choice from selected input field 
+  const selectedGenre = getSelectedGenre();
   const discoverMovieEndpoint = "/discover/movie";
-  const requestParams = `${tmdbKey}?with_genres=${selectedGenre}`;
-  const urlToFetch = `${tmdbBaseUrl}${discoverMovieEndpoint}${requestParams}`; // fetch URL is "baseURL+APIendpoint+APIkey+?key=value" query string search
+  const requestParams = `?api_key=${tmdbKey}&with_genres=${selectedGenre}`;
+  const urlToFetch = `${tmdbBaseUrl}${discoverMovieEndpoint}${requestParams}`;
   try {
     const response = await fetch(urlToFetch);
     if (response.ok) {
       const jsonResponse = await response.json();
-      console.log(jsonResponse)
+      const movies = jsonResponse.results;
+      return movies;
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 };
-getMovies();
 
-const getMovieInfo = () => {};
+const getMovieInfo = async (movie) => {
+  const movieId = movie.id;
+  const movieEndpoint = `/movie/{${movieId}}`;
+  const requestParams = `?api_key=${tmdbKey}`;
+  const urlToFetch = `${tmdbBaseUrl}${movieEndpoint}${requestParams}`;
+  try {
+    const response = fetch("https://api.themoviedb.org/3/movie/" + movieId + "?api_key=d0b1862294a50ae09f3e89f5e341bdee");
+    console.log(urlToFetch)
+    if (response.ok) {
+      const movieInfo = await response.json();
+      console.log(movieInfo);
+      return movieInfo;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 // Gets a list of movies and ultimately displays the info of a random movie from the list
-const showRandomMovie = () => {
+const showRandomMovie = async () => {
   const movieInfo = document.getElementById("movieInfo");
   if (movieInfo.childNodes.length > 0) {
     clearCurrentMovie();
   }
+  const movies = await getMovies();
+  const randomMovie = getRandomMovie(movies);
+  const info = await getMovieInfo(randomMovie);
+  displayMovie(info);
 };
 
 getGenres().then(populateGenreDropdown);
