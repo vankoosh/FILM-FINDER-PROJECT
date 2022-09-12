@@ -13,6 +13,7 @@ const populateGenreDropdown = (genres) => {
 // Returns the current genre selection from the dropdown menu
 const getSelectedGenre = () => {
   const selectedGenre = document.getElementById("genres").value;
+  console.log(selectedGenre)
   return selectedGenre;
 };
 
@@ -99,3 +100,4 @@ const displayMovie = (movieInfo) => {
   likeBtn.onclick = likeMovie;
   dislikeBtn.onclick = dislikeMovie;
 };
+
