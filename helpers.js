@@ -1,5 +1,5 @@
 // Populate dropdown menu with all the available genres
-const populateGenreDropdown = (genres) => {
+function populateGenreDropdown(genres) {
   const select = document.getElementById("genres");
 
   for (const genre of genres) {
@@ -8,15 +8,13 @@ const populateGenreDropdown = (genres) => {
     option.text = genre.name;
     select.appendChild(option);
   }
-};
+}
 
 // Returns the current genre selection from the dropdown menu
-const getSelectedGenre = () => {
+function getSelectedGenre() {
   const selectedGenre = document.getElementById("genres").value;
-  console.dir(selectedGenre)
-  console.log(selectedGenre)
   return selectedGenre;
-};
+}
 
 // Displays the like and dislike buttons on the page
 const showBtns = () => {
@@ -45,7 +43,7 @@ const dislikeMovie = () => {
 };
 
 // Create HTML for movie poster
-const createMoviePoster = (posterPath) => {
+function createMoviePoster(posterPath) {
   const moviePosterUrl = `https://image.tmdb.org/t/p/original/${posterPath}`;
 
   const posterImg = document.createElement("img");
@@ -53,7 +51,7 @@ const createMoviePoster = (posterPath) => {
   posterImg.setAttribute("id", "moviePoster");
 
   return posterImg;
-};
+}
 
 // Create HTML for movie title
 const createMovieTitle = (title) => {
@@ -73,12 +71,12 @@ const createMovieOverview = (overview) => {
   return overviewParagraph;
 };
 
-// Returns a random movie from the first page of movies
-const getRandomMovie = (movies) => {
+// Returns a random movie from array of movies
+function getRandomMovie(movies) {
   const randomIndex = Math.floor(Math.random() * movies.length);
   const randomMovie = movies[randomIndex];
   return randomMovie;
-};
+}
 
 // Uses the DOM to create HTML to display the movie
 const displayMovie = (movieInfo) => {
